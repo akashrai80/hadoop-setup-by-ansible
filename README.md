@@ -39,4 +39,22 @@ this two playbooks setup the name node nad tha data node of hadoop cluster
 ## setup name node:
   1. download all files from hadoop nn folder
   2. run the hadoopnamenode.yml
+ 
+     ansible-playbook  hadoopnamenode.yml
+ 
+ 3. it will prompt to enter the directory name and port number, give any directory name and port number which is free 
+ 
+ *it will setup the namenode on the target node *
+ 
+ ## setup data node:
+  1. download all files from hadoop dn folder
+  2. run the datanode.yml
+ 
+     ansible-playbook  datanode.yml 
+ 
+ *it will setup the datanode on the target node *
+ 
+ 
+ 
+ **To check go to aboth the nodes and run jps command there it will conform that data node and name node is configured or not**
 
