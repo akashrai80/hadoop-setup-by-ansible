@@ -1,0 +1,57 @@
+
+ - hosts: datanode
+   vars:
+        a: "hello"   
+   tasks:
+      - debug:
+          msg: "{{ a }}"        
+ - hosts: namenode
+   vars_prompt:
+      - name: "nn_dir"
+        private: no
+        prompt: "Enter the mount dir"
+      - name: "port"
+        private: no
+        prompt: "enter port number"  
+   vars:   
+        java_pkg: "/root/jdk-8u171-linux-x64.rpm"
+        hadoop_pkg: "/root/hadoop-1.2.1-1.x86_64.rpm"
+        
+   tasks:     
+      - debug:
+          msg: "{{ a }}"        
+      - name: "copy hadoop software"
+        copy:
+          dest: "/root"
+          src: "{{ hadoop_pkg  }}"
+      - name: "copy java software"
+        copy:
+          dest: "/root"
+          src: "{{ java_pkg  }}"
+   
+      - name: "install java"
+        package:
+          name: "{{ java_pkg  }}"
+      - name: "install hadoop"
+        package:
+          name: "{{ hadoop_pkg }}"
+
+      - file:
+              path: "{{ nn_dir }}"
+              state: directory    
+      - template:
+              dest: "/etc/hadoop/hdfs-site.xml"
+              src: "hdfs-site1.yml"     
+              
+      - template:
+              dest: "/etc/hadoop/core-site.xml"
+              src: "core-site.yml"
+
+      - name: "formating namenode!!"
+        shell: "echo Y | hadoop namenode -format "
+      
+      - name: "starting  namenode!!"
+        command: "hadoop-daemon.sh start namenode"   
+  
+  
+
