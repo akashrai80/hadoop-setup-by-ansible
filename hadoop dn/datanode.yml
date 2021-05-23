@@ -1,0 +1,46 @@
+ - hosts: datanode
+   vars_prompt:
+      - name: "nn_dir"
+        private: no
+        prompt: "Enter the mount dir"
+     
+   vars:   
+        java_pkg: "/root/jdk-8u171-linux-x64.rpm"
+        pkg: "jdk-8u171-linux-x64.rpm"
+        hadoop_pkg: "/root/hadoop-1.2.1-1.x86_64.rpm"
+        pkg1: "hadoop-1.2.1-1.x86_64.rpm"
+   tasks:          
+      - name: "copy hadoop software"
+        copy:
+          dest: "/root"
+          src: "{{ hadoop_pkg  }}"
+
+      - name: "copy java software"
+        copy:
+          dest: "/root"
+          src: "{{ java_pkg  }}"
+   
+      - name: "install java"
+        command: "rpm -i {{ pkg }}  "
+        ignore_errors: yes
+
+      - name: "install hadoop"        
+        command: "rpm -i {{ pkg1 }} --force "      
+        ignore_errors: yes
+
+      - file:
+              path: "{{ nn_dir }}"
+              state: directory    
+      - template:
+              dest: "/etc/hadoop/hdfs-site.xml"
+              src: "hdfs-site.yml"     
+              
+      - template:
+              dest: "/etc/hadoop/core-site.xml"
+              src: "core-site3.yml"
+
+      - name: "starting  datanode!!"
+        command: "hadoop-daemon.sh start datanode"   
+  
+  
+
