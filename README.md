@@ -1,2 +1,8 @@
 # hadoop-setup-by-ansible
-setup hadoop hdfs cluster by ansible playbook
+this two playbooks setup the name node nad tha data node of hadoop cluster 
+
+## note:
+
+
+## setup name node:
+
